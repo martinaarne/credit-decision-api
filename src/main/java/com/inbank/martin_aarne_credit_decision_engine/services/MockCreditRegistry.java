@@ -11,25 +11,34 @@ public class MockCreditRegistry implements ICreditRegistry {
     }
     @Override
     public CreditModifierResponse getCreditModifier(String ssn) {
+        Integer creditRating = getCreditRatingFromSsn(ssn);
+        if(creditRating == null){
+            return null;
+        }
+
         CreditModifierResponse response = new CreditModifierResponse();
         response.setSsn(ssn);
+        response.setCreditRating(creditRating);
+        return response;
+    }
 
+    private Integer getCreditRatingFromSsn(String ssn) {
         if (ssn.equals("49002010965")){
-            response.setCreditRating(0);
+            return 0;
         }
 
         if (ssn.equals("49002010976")) {
-            response.setCreditRating(100);
+            return 100;
         }
 
         if (ssn.equals("49002010987")) {
-            response.setCreditRating(300);
+            return 300;
         }
 
         if (ssn.equals("49002010998")) {
-            response.setCreditRating(1000);
+            return 1000;
         }
 
-        return response;
+        return null;
     }
 }

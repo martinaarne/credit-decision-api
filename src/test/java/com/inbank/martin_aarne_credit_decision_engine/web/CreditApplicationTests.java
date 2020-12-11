@@ -97,7 +97,7 @@ class CreditApplicationTests {
     }
 
     @Test
-    void processCreditRequest_lowCredit_approvedForLongerPeriod() {
+    void processCreditRequest_lowCredit_approvedForLongerPeriodAndLowerAmount() {
         requestAmount = 4000;
         int requestedPeriod = 12;
         CreditRequest request = mockRequest(ssnCreditMed, requestAmount, requestedPeriod);
@@ -118,7 +118,7 @@ class CreditApplicationTests {
     }
 
     @Test
-    void processCreditRequest_invalidAmount_throwsException() {
+    void processCreditRequest_invalidAmount_notValid() {
         requestAmount = -9000;
         CreditRequest request = mockRequest(ssnCreditHigh, requestAmount, 12);
 
@@ -127,13 +127,13 @@ class CreditApplicationTests {
     }
 
     @Test
-    void processCreditRequest_nullRequest_throwsException() {
+    void processCreditRequest_nullRequest_notValid() {
         CreditDecisionResponse response = service.processCreditRequest(null);
         assertFalse(response.isValid());
     }
 
     @Test
-    void processCreditRequest_invalidPeriod_throwsException() {
+    void processCreditRequest_invalidPeriod_notValid() {
         CreditRequest request = mockRequest(ssnCreditHigh, requestAmount, -5);
         CreditDecisionResponse response = service.processCreditRequest(request);
 
@@ -147,7 +147,7 @@ class CreditApplicationTests {
 
         CreditDecisionResponse response = service.processCreditRequest(request);
 
-        assertTrue(response.isValid());
+        assertFalse(response.isValid());
         assertNull(response.getCreditDecisionForRequestedPeriod());
         assertNull(response.getApprovedCreditDecisionWithMinPeriod());
     }

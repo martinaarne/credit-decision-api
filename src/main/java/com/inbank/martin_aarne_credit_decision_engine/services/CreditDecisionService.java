@@ -40,7 +40,11 @@ public class CreditDecisionService implements ICreditDecisionService {
 
         CreditModifierResponse modifier = creditRegistry.getCreditModifier(request.getSsn());
 
-        if (modifier == null || modifier.getCreditModifier() <= 0) {
+        if (modifier == null) {
+            response.addValidationMessage("No credit information found for SSN \"" + request.getSsn() + "\"");
+            return response;
+        }
+        if(modifier.getCreditModifier() <= 0) {
             return response;
         }
 
